@@ -10,6 +10,14 @@ class SwiftModelling < Formula
   depends_on :xcode => ["16.0", :build]
 
   def install
+    # Support swiftly by detecting its home directory from the swift path
+    swift_bin = Utils.safe_popen_read("which", "swift").strip
+    if swift_bin.include?("/swiftly/bin/swift")
+      swiftly_home = File.dirname(File.dirname(swift_bin))
+      ENV["SWIFTLY_HOME_DIR"] = swiftly_home
+      ENV["SWIFTLY_BIN_DIR"] = swift_bin.delete_suffix("/swift")
+    end
+
     system "swift", "build", "--disable-sandbox", "-c", "release"
     bin.install ".build/release/swift-ecore"
     bin.install ".build/release/swift-atl"
