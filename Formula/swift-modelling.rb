@@ -12,27 +12,19 @@ class SwiftModelling < Formula
   end
 
   on_linux do
-    # Check if swift is already available by asking the login shell.
-    # This respects custom installations like swiftly or swiftenv.
-    swift_found = which("swift") || system("#{ENV["SHELL"] || "bash"} -l -c '''which swift''' > /dev/null 2>&1")
+    # Check if swift exists in the PATH (handles both files and symlinks)
+    swift_found = ENV["PATH"].split(File::PATH_SEPARATOR).any? do |dir|
+      File.exist?(File.join(dir, "swift"))
+    end
     depends_on "swift" => :build unless swift_found
   end
 
   def install
-    # Locate the swift executable, preferring the one from the login shell if brew PATH is scrubbed
-    swift_path = which("swift") || begin
-      shell_path = `#{ENV["SHELL"] || "bash"} -l -c '''which swift''' 2>/dev/null`.strip
-      Pathname.new(shell_path) if !shell_path.empty? && File.executable?(shell_path)
-    rescue
-      nil
-    end
-
-    # If using swiftly, ensure environment variables are set correctly for the build
-    if swift_path && swift_path.to_s.include?("swiftly")
-      swift_bin_dir = File.dirname(swift_path.to_s)
-      ENV["SWIFTLY_BIN_DIR"] ||= swift_bin_dir
-      ENV["SWIFTLY_HOME_DIR"] ||= File.dirname(swift_bin_dir)
-      ENV.prepend_path "PATH", swift_bin_dir
+    # If using swiftly, infer and set its home directory from the binary location
+    if (swift_path = which("swift")) && swift_path.to_s.include?("swiftly")
+      bin_dir = File.dirname(swift_path)
+      ENV["SWIFTLY_BIN_DIR"] = bin_dir
+      ENV["SWIFTLY_HOME_DIR"] = File.dirname(bin_dir)
     end
 
     system "swift", "build", "--disable-sandbox", "-c", "release"
