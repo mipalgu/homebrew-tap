@@ -4,6 +4,7 @@ class SwiftModelling < Formula
   url "https://github.com/mipalgu/swift-modelling/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "b1439fa9c9f824c11eda8bdde29f4445374321f3f7601553055694d113df6661"
   license "MIT"
+  env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
   depends_on :xcode => ["16.0", :build]
