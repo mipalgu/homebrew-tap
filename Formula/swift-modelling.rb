@@ -1,14 +1,3 @@
-class SwiftCompilerRequirement < Requirement
-  fatal true
-  default_formula "swift"
-
-  satisfy(build_values: false) { !which("swift").nil? }
-
-  def message
-    "Swift compiler not found in PATH. Please install Swift or ensure it is available in your PATH."
-  end
-end
-
 class SwiftModelling < Formula
   desc "A CLI wrapper for the Swift Modelling Framework (EMF, ATL, MTL)"
   homepage "https://github.com/mipalgu/swift-modelling"
@@ -18,20 +7,32 @@ class SwiftModelling < Formula
   env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
-  if OS.mac?
+  on_macos do
     depends_on :xcode => ["26.0", :build]
-  else
-    depends_on SwiftCompilerRequirement => :build
+  end
+
+  on_linux do
+    # Check if swift is already available by asking the login shell.
+    # This respects custom installations like swiftly or swiftenv.
+    swift_found = which("swift") || system("#{ENV["SHELL"] || "bash"} -l -c "which swift" > /dev/null 2>&1")
+    depends_on "swift" => :build unless swift_found
   end
 
   def install
-    # If using swiftly, ensure environment variables are set.
-    # We infer them from the location of the swift binary.
-    swift_path = which("swift")
+    # Locate the swift executable, preferring the one from the login shell if brew PATH is scrubbed
+    swift_path = which("swift") || begin
+      shell_path = `#{ENV["SHELL"] || "bash"} -l -c "which swift" 2>/dev/null`.strip
+      Pathname.new(shell_path) if !shell_path.empty? && File.executable?(shell_path)
+    rescue
+      nil
+    end
+
+    # If using swiftly, ensure environment variables are set correctly for the build
     if swift_path && swift_path.to_s.include?("swiftly")
       swift_bin_dir = File.dirname(swift_path.to_s)
       ENV["SWIFTLY_BIN_DIR"] ||= swift_bin_dir
       ENV["SWIFTLY_HOME_DIR"] ||= File.dirname(swift_bin_dir)
+      ENV.prepend_path "PATH", swift_bin_dir
     end
 
     system "swift", "build", "--disable-sandbox", "-c", "release"
