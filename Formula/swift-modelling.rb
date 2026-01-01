@@ -14,14 +14,14 @@ class SwiftModelling < Formula
   on_linux do
     # Check if swift is already available by asking the login shell.
     # This respects custom installations like swiftly or swiftenv.
-    swift_found = which("swift") || system("#{ENV["SHELL"] || "bash"} -l -c "which swift" > /dev/null 2>&1")
+    swift_found = which("swift") || system("#{ENV["SHELL"] || "bash"} -l -c '''which swift''' > /dev/null 2>&1")
     depends_on "swift" => :build unless swift_found
   end
 
   def install
     # Locate the swift executable, preferring the one from the login shell if brew PATH is scrubbed
     swift_path = which("swift") || begin
-      shell_path = `#{ENV["SHELL"] || "bash"} -l -c "which swift" 2>/dev/null`.strip
+      shell_path = `#{ENV["SHELL"] || "bash"} -l -c '''which swift''' 2>/dev/null`.strip
       Pathname.new(shell_path) if !shell_path.empty? && File.executable?(shell_path)
     rescue
       nil
