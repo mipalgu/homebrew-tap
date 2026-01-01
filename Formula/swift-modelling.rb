@@ -12,19 +12,25 @@ class SwiftModelling < Formula
   end
 
   on_linux do
-    # Check if swift exists in the PATH (handles both files and symlinks)
-    swift_found = ENV["PATH"].split(File::PATH_SEPARATOR).any? do |dir|
+    # Check the original PATH before Homebrew scrubbed it
+    original_path = ENV["HOMEBREW_PATH"] || ENV["PATH"]
+    swift_found = original_path.split(File::PATH_SEPARATOR).any? do |dir|
       File.exist?(File.join(dir, "swift"))
     end
     depends_on "swift" => :build unless swift_found
   end
 
   def install
-    # If using swiftly, infer and set its home directory from the binary location
-    if (swift_path = which("swift")) && swift_path.to_s.include?("swiftly")
-      bin_dir = File.dirname(swift_path)
-      ENV["SWIFTLY_BIN_DIR"] = bin_dir
-      ENV["SWIFTLY_HOME_DIR"] = File.dirname(bin_dir)
+    # If swiftly is in the PATH, ensure its environment variables are set
+    # because Homebrew might have scrubbed them even if it kept the PATH.
+    original_path = ENV["HOMEBREW_PATH"] || ENV["PATH"]
+    swift_dir = original_path.split(File::PATH_SEPARATOR).find do |dir|
+      File.exist?(File.join(dir, "swift"))
+    end
+
+    if swift_dir && swift_dir.include?("swiftly")
+      ENV["SWIFTLY_BIN_DIR"] = swift_dir
+      ENV["SWIFTLY_HOME_DIR"] = File.dirname(swift_dir)
     end
 
     system "swift", "build", "--disable-sandbox", "-c", "release"
