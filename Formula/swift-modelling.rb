@@ -7,15 +7,20 @@ class SwiftModelling < Formula
   env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
-  depends_on :xcode => ["16.0", :build]
+  if OS.mac?
+    depends_on :xcode => ["26.0", :build]
+  else
+    depends_on "swift" => :build if which("swift").nil?
+  end
 
   def install
     # Support swiftly by detecting its home directory from the swift path
-    swift_bin = Utils.safe_popen_read("which", "swift").strip
-    if swift_bin.include?("/swiftly/bin/swift")
+    swift_path = which("swift")
+    if swift_path && swift_path.to_s.include?("/swiftly/bin/swift")
+      swift_bin = swift_path.to_s
       swiftly_home = File.dirname(File.dirname(swift_bin))
       ENV["SWIFTLY_HOME_DIR"] = swiftly_home
-      ENV["SWIFTLY_BIN_DIR"] = swift_bin.delete_suffix("/swift")
+      ENV["SWIFTLY_BIN_DIR"] = File.dirname(swift_bin)
     end
 
     system "swift", "build", "--disable-sandbox", "-c", "release"
