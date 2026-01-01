@@ -7,10 +7,16 @@ class SwiftModelling < Formula
   env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
+  def self.swift_in_path?
+    ENV["PATH"].split(File::PATH_SEPARATOR).any? do |dir|
+      File.executable?(File.join(dir, "swift"))
+    end
+  end
+
   if OS.mac?
     depends_on :xcode => ["26.0", :build]
-  else
-    depends_on "swift" => :build if which("swift").nil?
+  elsif !swift_in_path?
+    depends_on "swift" => :build
   end
 
   def install
