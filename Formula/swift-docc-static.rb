@@ -1,8 +1,8 @@
 class SwiftDoccStatic < Formula
   desc "Generate static HTML/CSS documentation for Swift packages"
   homepage "https://github.com/mipalgu/swift-docc-static"
-  url "https://github.com/mipalgu/swift-docc-static/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "c332d52a47b09ffed01ef014e6e1c93e9fdc919bb2c58237340a7dfa8f073a66"
+  url "https://github.com/mipalgu/swift-docc-static/archive/refs/tags/v0.1.2.tar.gz"
+  sha256 "03928b89eb771db88f76215a883ca0aa1da7d4d98e2cc81606c3c6d52e55a7d9"
   license "Apache-2.0"
   env :std
   head "https://github.com/mipalgu/swift-docc-static.git", branch: "main"
