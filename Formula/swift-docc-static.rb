@@ -9,8 +9,8 @@ class SwiftDoccStatic < Formula
 
   bottle do
     root_url "https://github.com/mipalgu/swift-docc-static/releases/download/v0.1.3"
-    sha256 cellar: :any, arm64_sequoia:   "236a46bc58439556c861cd4f7c7018a2a33e5503df71a3568e107087e1a52069"
-    sha256 cellar: :any, x86_64_linux:    "d35ce3d26365c55e7b721f55282015a9b0a01f720312766f40539072a78925c8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6d2be0d1538309803b821f5db4faef87290b66e8abde893daa45a84d82943071"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a7c5861010011df3fabc517889fdde21c1bd5b234bb680880c9edd5932b8626c"
   end
 
   on_macos do
