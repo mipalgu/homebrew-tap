@@ -1,16 +1,16 @@
 class SwiftModelling < Formula
   desc "A CLI wrapper for the Swift Modelling Framework (EMF, ATL, MTL)"
   homepage "https://github.com/mipalgu/swift-modelling"
-  url "https://github.com/mipalgu/swift-modelling/archive/refs/tags/v0.1.5.tar.gz"
-  sha256 "84d78f993934e106036ff5926f8b6653a2c14a581dbbba0931ce058397045af3"
+  url "https://github.com/mipalgu/swift-modelling/archive/refs/tags/v0.1.6.tar.gz"
+  sha256 "d70c198a937be2b83961158f56b755c6254020c8df8595da380549dbb3a7702c"
   license "MIT"
   env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/mipalgu/swift-modelling/releases/download/v0.1.5"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5a49a02ee56321eab6369bd52de833c747181a3f26d3d76f734e5500714c6121"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "240234a0050c623047d8881578c2b72c07ed2f9e6de28180ef90ea1989eee624"
+    root_url "https://github.com/mipalgu/swift-modelling/releases/download/v0.1.6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6512c8d6b1c70b358e0f9df69978336b8f94e25066c1d52e6200c3de191b2248"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1c10b2753e6cd8b5a9af5d2693f7d6429a3c46860cb19769c7da183dc8ad4120"
   end
 
   on_macos do
