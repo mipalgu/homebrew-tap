@@ -9,6 +9,8 @@ class SwiftModelling < Formula
 
   bottle do
     root_url "https://github.com/mipalgu/swift-modelling/releases/download/v0.1.7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a6379e50abe6ede8aeb33f343b52d57c53d443e6cb2c5543e6c730fc4379eb82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "ca08bd18a6e13aa08fa0c6a6c068b972c07c60e6f3f69b7e91134b30756610f7"
   end
 
   on_macos do
