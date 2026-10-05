@@ -40,14 +40,23 @@ class SwiftModelling < Formula
     end
 
     system "swift", "build", "--disable-sandbox", "-c", "release"
-    bin.install ".build/release/swift-ecore"
-    bin.install ".build/release/swift-atl"
-    bin.install ".build/release/swift-mtl"
+
+    # The tools load their bundled templates, transformations and metamodels
+    # from resource bundles next to the executable, so both go into libexec.
+    tools = %w[swift-ecore swift-atl swift-mtl]
+    tools.each { |tool| libexec.install ".build/release/#{tool}" }
+    bundles = Dir[".build/release/*.bundle", ".build/release/*.resources"].reject do |bundle|
+      File.basename(bundle).match?(/(Tests|-tests)\.(bundle|resources)\z/)
+    end
+    odie "No resource bundles were built" if bundles.empty?
+    libexec.install bundles
+    tools.each { |tool| bin.write_exec_script libexec/tool }
   end
 
   test do
     system "#{bin}/swift-ecore", "--help"
     system "#{bin}/swift-atl", "--help"
     system "#{bin}/swift-mtl", "--help"
+    assert_match "java", shell_output("#{bin}/swift-atl generate --help")
   end
 end
