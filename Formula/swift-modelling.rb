@@ -3,7 +3,7 @@ class SwiftModelling < Formula
   homepage "https://github.com/mipalgu/swift-modelling"
   url "https://github.com/mipalgu/swift-modelling/archive/refs/tags/v0.2.2.tar.gz"
   sha256 "101e1518fb37b7850593127357360291c2ba69f5ecb0d30383eb93621cfccce7"
-  license "MIT"
+  license any_of: ["BSD-4-Clause", "GPL-2.0-or-later"]
   env :std
   head "https://github.com/mipalgu/swift-modelling.git", branch: "main"
 
