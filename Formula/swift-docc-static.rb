@@ -1,16 +1,16 @@
 class SwiftDoccStatic < Formula
   desc "Generate static HTML/CSS documentation for Swift packages"
   homepage "https://github.com/mipalgu/swift-docc-static"
-  url "https://github.com/mipalgu/swift-docc-static/archive/refs/tags/v0.1.8.tar.gz"
-  sha256 "673a564bc1170df48b4f8462a258b999e344e8f22da28bfd74c63903d7b996e8"
+  url "https://github.com/mipalgu/swift-docc-static/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "31f7e5a9131baf212c31f3473934295609ed4bfdf388df1b937d3930186b696e"
   license "Apache-2.0"
   env :std
   head "https://github.com/mipalgu/swift-docc-static.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/mipalgu/swift-docc-static/releases/download/v0.1.8"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "03fb6fd214a612d5bb7eacf27f86e4535ed7fe8ea94399d7f3af3c6113d5ce75"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "988177d7ab6883eb2749fdbb6f48b86176cae10bd4f5e5bf9a0a541a43acadd6"
+    root_url "https://github.com/mipalgu/swift-docc-static/releases/download/v0.2.0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f89bcbd9f26113d1fefbb91a8fcb8e175974e5d480b3ad6dbbd9bbae7ef6a46d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "b86ad345aa79f04979dc7aa0408447e87d090924d210c36e2c14d951d134dc1b"
   end
 
   on_macos do
